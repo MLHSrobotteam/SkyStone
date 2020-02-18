@@ -52,24 +52,24 @@ public class MotorEncoders extends LinearOpMode {
         waitForStart();
         runtime.reset();
         totalRuntime.reset();
-        robot.setDriveMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        robot.setDriveMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.driveTrain.setDriveMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.driveTrain.setDriveMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         while (opModeIsActive() && totalRuntime.seconds() < 30 )
         {
-            robot.setDriveTargetDistance(12.0); //<-- in inches
+            robot.driveTrain.setTargetDistance(12.0); //<-- in inches
             runtime.reset();
-            robot.setDriveMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.drive(0.5);
+            robot.driveTrain.setDriveMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.driveTrain.drive(0.5);
 
-            while(opModeIsActive() && runtime.seconds() < 5 && robot.driveIsBusy())
+            while(opModeIsActive() && runtime.seconds() < 5 && robot.driveTrain.isBusy())
             {
-                telemetry.addData("Path1",  "Front Right %7d", robot.frontRightDrive.getCurrentPosition());
-                telemetry.addData("Path2",  "Front Left  %7d", robot.frontLeftDrive.getCurrentPosition());
-                telemetry.addData("Path3",  "Back Right %7d", robot.backRightDrive.getCurrentPosition());
-                telemetry.addData("Path4",  "Back Left  %7d", robot.backLeftDrive.getCurrentPosition());
+                telemetry.addData("Path1",  "Front Right %7d", robot.driveTrain.frontRightDrive.getCurrentPosition());
+                telemetry.addData("Path2",  "Front Left  %7d", robot.driveTrain.frontLeftDrive.getCurrentPosition());
+                telemetry.addData("Path3",  "Back Right %7d", robot.driveTrain.backRightDrive.getCurrentPosition());
+                telemetry.addData("Path4",  "Back Left  %7d", robot.driveTrain.backLeftDrive.getCurrentPosition());
             }
-            robot.drive(0);
+            robot.driveTrain.drive(0);
         }
     }
 }
