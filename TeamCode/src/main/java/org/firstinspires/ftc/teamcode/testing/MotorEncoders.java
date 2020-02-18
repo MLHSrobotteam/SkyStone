@@ -31,6 +31,7 @@ package org.firstinspires.ftc.teamcode.testing;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.robot.Robot;
@@ -51,14 +52,14 @@ public class MotorEncoders extends LinearOpMode {
         waitForStart();
         runtime.reset();
         totalRuntime.reset();
-        robot.stopAndResetDriveEncoders();
-        robot.startDriveEncoders();
+        robot.setDriveMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.setDriveMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         while (opModeIsActive() && totalRuntime.seconds() < 30 )
         {
             robot.setDriveTargetDistance(12.0); //<-- in inches
             runtime.reset();
-            robot.runToPosition();
+            robot.setDriveMode(DcMotor.RunMode.RUN_TO_POSITION);
             robot.drive(0.5);
 
             while(opModeIsActive() && runtime.seconds() < 5 && robot.driveIsBusy())
@@ -68,7 +69,6 @@ public class MotorEncoders extends LinearOpMode {
                 telemetry.addData("Path3",  "Back Right %7d", robot.backRightDrive.getCurrentPosition());
                 telemetry.addData("Path4",  "Back Left  %7d", robot.backLeftDrive.getCurrentPosition());
             }
-
             robot.drive(0);
         }
     }

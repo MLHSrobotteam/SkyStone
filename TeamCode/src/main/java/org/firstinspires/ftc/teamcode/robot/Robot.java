@@ -56,26 +56,34 @@ public class Robot
         backLeftDrive.setDirection(DcMotor.Direction.FORWARD);
     }
 
-    public void stopAndResetDriveEncoders()
+    public void setDriveMode(DcMotor.RunMode mode)
     {
-        frontRightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        frontLeftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        backRightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        backLeftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-    }
-
-    public void startDriveEncoders()
-    {
-        frontRightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        frontLeftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        backRightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        backLeftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-    }
-
-    public void setRightDriveTargetPosition(int position)
-    {
-        frontRightDrive.setTargetPosition(position);
-        backRightDrive.setTargetPosition(position);
+        switch(mode) {
+            case STOP_AND_RESET_ENCODER:
+                frontRightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                frontLeftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                backRightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                backLeftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                break;
+            case RUN_USING_ENCODER:
+                frontRightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                frontLeftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                backRightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                backLeftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                break;
+            case RUN_WITHOUT_ENCODER:
+                frontRightDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                frontLeftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                backRightDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                backLeftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                break;
+            case RUN_TO_POSITION:
+                frontRightDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                frontLeftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                backRightDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                backLeftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                break;
+        }
     }
 
     public void setLeftDriveTargetPosition(int position)
@@ -90,21 +98,22 @@ public class Robot
         setLeftDriveTargetPosition(position);
     }
 
-    public int distanceToTicks(double inches)
+    public void setRightDriveTargetPosition(int position)
     {
-        return (int)(inches * COUNTSPERINCH);
+        frontRightDrive.setTargetPosition(position);
+        backRightDrive.setTargetPosition(position);
     }
 
     public void setRightDriveTargetDistance(double inches)
     {
-        frontRightDrive.setTargetPosition(frontRightDrive.getCurrentPosition() + distanceToTicks(inches));
-        backRightDrive.setTargetPosition(backRightDrive.getCurrentPosition() + distanceToTicks(inches));
+        frontRightDrive.setTargetPosition(frontRightDrive.getCurrentPosition() + driveMotorDistToTick(inches));
+        backRightDrive.setTargetPosition(backRightDrive.getCurrentPosition() + driveMotorDistToTick(inches));
     }
 
     public void setLeftDriveTargetDistance(double inches)
     {
-        frontLeftDrive.setTargetPosition(frontLeftDrive.getCurrentPosition() + distanceToTicks(inches));
-        backLeftDrive.setTargetPosition(backLeftDrive.getCurrentPosition() + distanceToTicks(inches));
+        frontLeftDrive.setTargetPosition(frontLeftDrive.getCurrentPosition() + driveMotorDistToTick(inches));
+        backLeftDrive.setTargetPosition(backLeftDrive.getCurrentPosition() + driveMotorDistToTick(inches));
     }
 
     public void setDriveTargetDistance(double inches)
@@ -113,17 +122,12 @@ public class Robot
         setLeftDriveTargetDistance(inches);
     }
 
-
-    public void runToPosition()
+    public int driveMotorDistToTick(double inches)
     {
-        frontRightDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        frontLeftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        backRightDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        backLeftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        return (int)(inches * COUNTSPERINCH);
     }
 
-    public boolean driveIsBusy()
-    {
+    public boolean driveIsBusy() {
         return frontLeftDrive.isBusy() && frontRightDrive.isBusy() && backLeftDrive.isBusy() && backRightDrive.isBusy();
     }
 
