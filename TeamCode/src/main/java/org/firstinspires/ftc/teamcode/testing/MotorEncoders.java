@@ -30,13 +30,12 @@
 package org.firstinspires.ftc.teamcode.testing;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
-
 import org.firstinspires.ftc.teamcode.robot.Robot;
 
-@TeleOp(name="Motor Encoders Test V1.0", group="Auto")
+@Autonomous(name="Motor Encoders Test V1.0", group="Auto")
 //@Disabled
 public class MotorEncoders extends LinearOpMode {
 
@@ -50,6 +49,7 @@ public class MotorEncoders extends LinearOpMode {
         robot.initializeHardware(hardwareMap);
 
         waitForStart();
+
         runtime.reset();
         totalRuntime.reset();
         robot.driveTrain.setDriveMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -61,6 +61,7 @@ public class MotorEncoders extends LinearOpMode {
             runtime.reset();
             robot.driveTrain.setDriveMode(DcMotor.RunMode.RUN_TO_POSITION);
             robot.driveTrain.drive(0.5);
+            telemetry.addData("Motor", "Goal Ticks %7d", robot.driveTrain.frontRightDrive.getTargetPosition());
 
             while(opModeIsActive() && runtime.seconds() < 5 && robot.driveTrain.isBusy())
             {
@@ -68,6 +69,7 @@ public class MotorEncoders extends LinearOpMode {
                 telemetry.addData("Path2",  "Front Left  %7d", robot.driveTrain.frontLeftDrive.getCurrentPosition());
                 telemetry.addData("Path3",  "Back Right %7d", robot.driveTrain.backRightDrive.getCurrentPosition());
                 telemetry.addData("Path4",  "Back Left  %7d", robot.driveTrain.backLeftDrive.getCurrentPosition());
+                telemetry.update();
             }
             robot.driveTrain.drive(0);
         }
