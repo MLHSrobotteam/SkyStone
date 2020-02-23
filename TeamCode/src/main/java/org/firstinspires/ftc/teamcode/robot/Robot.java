@@ -23,6 +23,7 @@ public class Robot
     {
         driveTrain.initializeHardware(hMap);
         driveTrain.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        initializeMotorDirections();
     }
 
     public void initializeMotorDirections()

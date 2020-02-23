@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.robot;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -225,6 +226,40 @@ public class MecanumDrive
             drive(power);
 
         drive(0);
+    }
+
+    public void tankDriveControl(Gamepad gamepad1)
+    {
+        frontRightDrive.setPower( gamepad1.right_stick_y );
+        backRightDrive.setPower( gamepad1.right_stick_y );
+        frontLeftDrive.setPower( gamepad1.left_stick_y );
+        backLeftDrive.setPower( gamepad1.left_stick_y );
+
+        if (gamepad1.dpad_right)
+            strafe(-0.75);
+        else if (gamepad1.dpad_left)
+            strafe(0.75);
+        else if (gamepad1.dpad_up)
+            drive(-0.5);
+        else if (gamepad1.dpad_down)
+            drive(0.5);
+    }
+
+    public void perspectiveDriveControl(Gamepad gamepad1)
+    {
+        double magnitude = Math.hypot(gamepad1.left_stick_x, gamepad1.left_stick_y);
+        double robotAngle = Math.atan2(gamepad1.left_stick_y, gamepad1.left_stick_x) - Math.PI / 4;
+        double rightX = gamepad1.right_stick_x;
+
+        final double fl = magnitude * Math.cos(robotAngle) + rightX;
+        final double fr = magnitude * Math.sin(robotAngle) - rightX;
+        final double bl = magnitude * Math.sin(robotAngle) + rightX;
+        final double br = magnitude * Math.cos(robotAngle) - rightX;
+
+        frontLeftDrive.setPower(fl);
+        frontRightDrive.setPower(fr);
+        backLeftDrive.setPower(bl);
+        backRightDrive.setPower(br);
     }
 
     public String toString()
